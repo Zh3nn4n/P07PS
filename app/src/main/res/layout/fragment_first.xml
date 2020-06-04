@@ -23,15 +23,27 @@
         android:hint="Number"
         android:inputType="textPersonName" />
 
-    <Button
-        android:id="@+id/btnAddTextFrag1"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Retrieve SMS" />
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btnAddTextFrag1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Retrieve SMS" />
+
+        <Button
+            android:id="@+id/btnSendEmail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Send Email" />
+    </LinearLayout>
 
     <TextView
         android:id="@+id/tvFrag1"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="match_parent" />
 
 </LinearLayout>

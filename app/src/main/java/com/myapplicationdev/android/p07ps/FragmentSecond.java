@@ -21,6 +21,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -28,7 +31,7 @@ import android.widget.Toast;
 public class FragmentSecond extends Fragment {
     Button btnAddText;
     EditText etWord;
-    TextView tvFrag2;
+    TextView tvResult;
     public FragmentSecond() {
         // Required empty public constructor
     }
@@ -40,7 +43,7 @@ public class FragmentSecond extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_second, container, false);
 
-        tvFrag2 = view.findViewById(R.id.tvFrag2);
+        tvResult = view.findViewById(R.id.tvFrag2);
         btnAddText = view.findViewById(R.id.btnAddTextFrag2);
         etWord = view.findViewById(R.id.etWord);
 
@@ -64,7 +67,19 @@ public class FragmentSecond extends Fragment {
 
                 String filter = "body Like ?";
                 String word = etWord.getText().toString();
-                String[] filterArgs = {"%" + word + "%"};
+
+                String[] separated = word.split(" ");
+                String[] filterArgs = new String[separated.length];
+
+                for (int i = 0; i< separated.length; i++){
+                    if (separated.length == 1){
+                        filterArgs[i] = "%" + separated[i] + "%";
+                    }
+                    else{
+                        filter += " OR body Like ?";
+                        filterArgs[i] = "%" + separated[i] + "%";
+                    }
+                }
 
                 Cursor cursor = cr.query(uri, reqCols, filter, filterArgs, null);
                 String smsBody = "";
@@ -83,7 +98,7 @@ public class FragmentSecond extends Fragment {
                         smsBody += type + " " + address + "\n at " + date + "\n\"" + body + "\"\n\n";
                     } while (cursor.moveToNext());
                 }
-                tvFrag2.setText(smsBody);
+                tvResult.setText(smsBody);
             }
         });
 

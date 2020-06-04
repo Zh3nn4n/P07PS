@@ -2,6 +2,7 @@ package com.myapplicationdev.android.p07ps;
 
 import android.Manifest;
 import android.content.ContentResolver;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
@@ -26,9 +27,9 @@ import android.widget.Toast;
  * A simple {@link Fragment} subclass.
  */
 public class FragmentFirst extends Fragment {
-    Button btnAddText;
+    Button btnAddText, btnSendEmail;
     EditText etNum;
-    TextView tvFrag1;
+    TextView tvResult;
 
     public FragmentFirst() {
         // Required empty public constructor
@@ -40,9 +41,32 @@ public class FragmentFirst extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_first, container, false);
 
-        tvFrag1 = view.findViewById(R.id.tvFrag1);
+        tvResult = view.findViewById(R.id.tvFrag1);
         btnAddText = view.findViewById(R.id.btnAddTextFrag1);
+        btnSendEmail = view.findViewById(R.id.btnSendEmail);
         etNum = view.findViewById(R.id.etNum);
+
+        btnSendEmail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent email = new Intent(Intent.ACTION_SEND);
+            // Put essentials like email address, subject & body text
+                email.putExtra(Intent.EXTRA_EMAIL,
+                        new String[]{"18037689@myrp.edu.sg"});
+                email.putExtra(Intent.EXTRA_SUBJECT,
+                        "");
+                String statement = tvResult.getText().toString();
+
+                email.putExtra(Intent.EXTRA_TEXT,
+                        statement);
+                // This MIME type indicates email
+                email.setType("message/rfc822");
+                // createChooser shows user a list of app that can handle
+                // this MIME type, which is, email
+                startActivity(Intent.createChooser(email,
+                        "Choose an Email client :"));
+            }
+        });
 
         btnAddText.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -84,7 +108,7 @@ public class FragmentFirst extends Fragment {
                         smsBody += type + " " + address + "\n at " + date + "\n\"" + body + "\"\n\n";
                     } while (cursor.moveToNext());
                 }
-                tvFrag1.setText(smsBody);
+                tvResult.setText(smsBody);
             }
         });
 
